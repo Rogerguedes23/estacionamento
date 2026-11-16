@@ -64,24 +64,8 @@
   <div id="loginOverlay" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
     <div class="bg-teruya-card border border-teruya-border rounded-2xl max-w-sm w-full p-6 shadow-2xl space-y-5 text-center">
       <div class="flex flex-col items-center gap-2">
-        <!-- Logo Casa Teruya -->
-        <svg class="w-12 h-12 mb-1" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 25 C10 25, 40 25, 50 45 C40 25, 10 25, 10 25 Z" fill="#D32F2F" />
-          <path d="M10 25 L45 25 L50 45 L10 55 Z" fill="#D32F2F" />
-          <path d="M90 25 L55 25 L50 45 L90 55 Z" fill="#F57C00" />
-          <path d="M50 45 L90 55 L90 75 L50 45 Z" fill="#F57C00" />
-          <path d="M50 45 L10 55 L35 95 L50 45 Z" fill="#1B4D3E" />
-          <path d="M50 45 L65 95 L90 55 L50 45 Z" fill="#1B4D3E" />
-          <rect x="35" y="45" width="30" height="50" rx="4" fill="#1B4D3E" />
-          <path d="M10 25 Q35 25 50 45 Q15 35 10 25 Z" fill="#D32F2F" />
-          <path d="M10 25 H45 V45 L50 45 L10 55 Z" fill="#D32F2F" />
-          <path d="M90 25 H55 V45 L50 45 L90 55 Z" fill="#F57C00" />
-          <rect x="10" y="25" width="38" height="28" rx="6" fill="#D32F2F" />
-          <rect x="52" y="25" width="38" height="28" rx="6" fill="#F57C00" />
-          <path d="M10 25 C30 25 45 35 50 45 L10 53 Z" fill="#D32F2F" />
-          <path d="M90 25 C70 25 55 35 50 45 L90 53 Z" fill="#F57C00" />
-          <path d="M35 45 L65 45 L65 95 L35 95 Z" fill="#1B4D3E" />
-        </svg>
+        <!-- Logotipo Real Casa Teruya -->
+        <img src="logo-teruya.png" alt="Casa Teruya" class="w-16 h-16 object-contain rounded-xl shadow-md mb-1 bg-white p-1">
         <h2 class="text-xl font-bold tracking-wider text-white">CASA TERUYA</h2>
         <p class="text-xs text-gray-400">Insira o PIN de acesso para entrar no sistema</p>
       </div>
@@ -102,24 +86,8 @@
   <header class="bg-teruya-card border-b border-teruya-border py-4 px-6 shadow-md no-print">
     <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
       <div class="flex items-center gap-3">
-        <!-- Logo Casa Teruya -->
-        <svg class="w-10 h-10" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 25 C10 25, 40 25, 50 45 C40 25, 10 25, 10 25 Z" fill="#D32F2F" />
-          <path d="M10 25 L45 25 L50 45 L10 55 Z" fill="#D32F2F" />
-          <path d="M90 25 L55 25 L50 45 L90 55 Z" fill="#F57C00" />
-          <path d="M50 45 L90 55 L90 75 L50 45 Z" fill="#F57C00" />
-          <path d="M50 45 L10 55 L35 95 L50 45 Z" fill="#1B4D3E" />
-          <path d="M50 45 L65 95 L90 55 L50 45 Z" fill="#1B4D3E" />
-          <rect x="35" y="45" width="30" height="50" rx="4" fill="#1B4D3E" />
-          <path d="M10 25 Q35 25 50 45 Q15 35 10 25 Z" fill="#D32F2F" />
-          <path d="M10 25 H45 V45 L50 45 L10 55 Z" fill="#D32F2F" />
-          <path d="M90 25 H55 V45 L50 45 L90 55 Z" fill="#F57C00" />
-          <rect x="10" y="25" width="38" height="28" rx="6" fill="#D32F2F" />
-          <rect x="52" y="25" width="38" height="28" rx="6" fill="#F57C00" />
-          <path d="M10 25 C30 25 45 35 50 45 L10 53 Z" fill="#D32F2F" />
-          <path d="M90 25 C70 25 55 35 50 45 L90 53 Z" fill="#F57C00" />
-          <path d="M35 45 L65 45 L65 95 L35 95 Z" fill="#1B4D3E" />
-        </svg>
+        <!-- Logotipo Real Casa Teruya -->
+        <img src="logo-teruya.png" alt="Casa Teruya" class="w-10 h-10 object-contain rounded-lg shadow bg-white p-0.5">
         <div>
           <h1 class="text-xl font-bold tracking-wider text-white">CASA TERUYA</h1>
           <p class="text-xs text-gray-400 font-medium">Controlo de Acesso ao Estacionamento Gratuito</p>
@@ -336,11 +304,7 @@
 
   <!-- Application Logic + Supabase Integration -->
   <script>
-    // -------------------------------------------------------------
-    // CONFIGURAÇÃO DE SEGURANÇA E SUPABASE
-    // -------------------------------------------------------------
-    // SENHA DE ACESSO DO ESTACIONAMENTO (Você pode alterar aqui)
-    const ACCESS_PIN = 'Casa@0813'; 
+    const ACCESS_PIN = '1234'; 
 
     const SUPABASE_URL = 'https://incjjuymlcisoacmklcy.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_DhrPY16l25xQhbCO1Rc05g_1OTYouE4';
@@ -351,12 +315,10 @@
     let vehicles = [];
     let history = [];
 
-    // LÓGICA DE AUTENTICAÇÃO E LOGIN
     function checkAuth() {
       const authTimestamp = localStorage.getItem('teruya_auth_time');
       const isAuth = localStorage.getItem('teruya_authenticated');
 
-      // Se autenticado há menos de 12 horas (12 * 60 * 60 * 1000)
       if (isAuth === 'true' && authTimestamp && (Date.now() - parseInt(authTimestamp)) < 43200000) {
         document.getElementById('loginOverlay').classList.add('hidden');
         return true;
@@ -401,10 +363,8 @@
       setInterval(updateClock, 1000);
       setInterval(renderActiveDurations, 30000);
 
-      // Carrega os dados iniciais do Supabase
       await fetchAllData();
 
-      // Configura escuta em TEMPO REAL para os computadores
       _supabase
         .channel('schema-db-changes')
         .on(
@@ -418,7 +378,6 @@
         .subscribe();
     }
 
-    // Retorna a data/hora atual no fuso local exato (YYYY-MM-DDTHH:mm)
     function getLocalISOString(dateObj = new Date()) {
       const year = dateObj.getFullYear();
       const month = String(dateObj.getMonth() + 1).padStart(2, '0');
@@ -428,7 +387,6 @@
       return `${year}-${month}-${day}T${hours}:${minutes}`;
     }
 
-    // Converte a string de data para um objeto Date seguro no fuso local
     function parseLocalDate(dateStr) {
       if (!dateStr) return new Date();
       const [datePart, timePart] = dateStr.split('T');
@@ -483,7 +441,6 @@
       document.getElementById('entryTimeInput').value = getLocalISOString();
     }
 
-    // Leitura OCR Otimizada
     async function processPlateImage(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -576,7 +533,6 @@
       }
     }
 
-    // REGISTAR ENTRADA NO SUPABASE
     document.getElementById('entryForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       
@@ -634,7 +590,6 @@
       openTicketModal(createdVehicle);
     });
 
-    // REGISTAR SAÍDA NO SUPABASE
     async function registerExit(id) {
       const vehicle = vehicles.find(v => v.id === id);
       if (!vehicle) return;
