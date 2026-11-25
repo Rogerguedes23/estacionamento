@@ -30,32 +30,35 @@
   </script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    @media print {
-      body * {
-        display: none !important;
-      }
-      #printableArea, #printableArea * {
-        display: block !important;
-      }
-      #printableArea {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 72mm;
-        margin: 0;
-        padding: 5mm;
-        background: #ffffff !important;
-        color: #000000 !important;
-        font-family: 'Courier New', Courier, monospace !important;
-      }
-      .no-print {
-        display: none !important;
-      }
-      @page {
-        margin: 0;
-        size: auto;
-      }
-    }
+   @media print {
+  body * {
+    display: none !important;
+  }
+  #printableArea, #printableArea * {
+    display: block !important;
+    font-weight: 900 !important;
+    color: #000000 !important;
+    -webkit-text-stroke: 0.4px #000;   /* engrossa o traço na térmica */
+    text-shadow: 0 0 0 #000;
+  }
+  #printableArea {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 72mm;
+    margin: 0;
+    padding: 5mm;
+    background: #ffffff !important;
+    font-family: 'Courier New', Courier, monospace !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  @page {
+    margin: 0;
+    size: auto;
+  }
+}
   </style>
 </head>
 <body class="bg-teruya-dark text-gray-100 min-h-screen flex flex-col font-sans">
