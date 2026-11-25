@@ -30,35 +30,35 @@
   </script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-   @media print {
-  body * {
-    display: none !important;
-  }
-  #printableArea, #printableArea * {
-    display: block !important;
-    font-weight: 900 !important;
-    color: #000000 !important;
-    -webkit-text-stroke: 0.4px #000;   /* engrossa o traço na térmica */
-    text-shadow: 0 0 0 #000;
-  }
-  #printableArea {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 72mm;
-    margin: 0;
-    padding: 5mm;
-    background: #ffffff !important;
-    font-family: 'Courier New', Courier, monospace !important;
-  }
-  .no-print {
-    display: none !important;
-  }
-  @page {
-    margin: 0;
-    size: auto;
-  }
-}
+    @media print {
+      body * {
+        display: none !important;
+      }
+      #printableArea, #printableArea * {
+        display: block !important;
+        font-weight: 900 !important;
+        color: #000000 !important;
+        -webkit-text-stroke: 0.4px #000;   /* engrossa o traço na térmica */
+        text-shadow: 0 0 0 #000;
+      }
+      #printableArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 72mm;
+        margin: 0;
+        padding: 5mm;
+        background: #ffffff !important;
+        font-family: 'Courier New', Courier, monospace !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      @page {
+        margin: 0;
+        size: auto;
+      }
+    }
   </style>
 </head>
 <body class="bg-teruya-dark text-gray-100 min-h-screen flex flex-col font-sans">
@@ -164,7 +164,8 @@
               <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden" onchange="processPlateImage(event)">
             </div>
             <div class="relative">
-              <input type="text" id="plateInput" required placeholder="ABC1D23 ou ABC-1234" maxlength="8" class="w-full bg-teruya-dark border border-teruya-border rounded-lg px-3.5 py-2 text-white placeholder-gray-600 focus:outline-none focus:border-teruya-orange uppercase tracking-wider text-sm">
+              <input type="text" id="plateInput" required list="plateList" autocomplete="off" placeholder="ABC1D23 ou ABC-1234" maxlength="8" class="w-full bg-teruya-dark border border-teruya-border rounded-lg px-3.5 py-2 text-white placeholder-gray-600 focus:outline-none focus:border-teruya-orange uppercase tracking-wider text-sm">
+              <datalist id="plateList"></datalist>
               <div id="ocrLoading" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-xs text-teruya-orange flex items-center gap-1 bg-teruya-dark px-2 py-1 rounded">
                 <i class="fa-solid fa-spinner fa-spin"></i> Lendo...
               </div>
@@ -317,6 +318,39 @@
     let currentTab = 'active';
     let vehicles = [];
     let history = [];
+    let knownPlates = new Map();
+
+    function updatePlateSuggestions(allVehicles) {
+      // allVehicles vem ordenado do mais recente para o mais antigo,
+      // então a primeira ocorrência de cada placa é o cadastro mais recente
+      knownPlates = new Map();
+      allVehicles.forEach(v => {
+        if (v.plate && !knownPlates.has(v.plate)) knownPlates.set(v.plate, v);
+      });
+
+      const datalist = document.getElementById('plateList');
+      datalist.innerHTML = '';
+
+      knownPlates.forEach((v, plate) => {
+        // não sugere quem já está no pátio
+        if (vehicles.some(a => a.plate === plate)) return;
+        const opt = document.createElement('option');
+        opt.value = plate;
+        opt.label = `${v.brand !== '-' ? v.brand : ''} ${v.model !== '-' ? v.model : ''}`.trim();
+        datalist.appendChild(opt);
+      });
+    }
+
+    document.getElementById('plateInput').addEventListener('input', function () {
+      const known = knownPlates.get(this.value.trim().toUpperCase());
+      if (!known) return;
+
+      selectType(known.type);
+      const brandEl = document.getElementById('brandInput');
+      const modelEl = document.getElementById('modelInput');
+      if (!brandEl.value && known.brand !== '-') brandEl.value = known.brand;
+      if (!modelEl.value && known.model !== '-') modelEl.value = known.model;
+    });
 
     function checkAuth() {
       const authTimestamp = localStorage.getItem('teruya_auth_time');
@@ -427,6 +461,8 @@
 
           vehicles = mapped.filter(v => !v.exitTime);
           history = mapped.filter(v => v.exitTime);
+
+          updatePlateSuggestions(mapped);
 
           render();
         }
